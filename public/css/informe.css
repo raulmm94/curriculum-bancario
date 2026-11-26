@@ -1,0 +1,110 @@
+/* Informe en folios A4. Siempre en claro (es un documento para imprimir o guardar como PDF). */
+
+.informe-herramientas { gap: 12px; }
+.informe-opciones { display: flex; flex-wrap: wrap; gap: 12px 22px; align-items: center; }
+.informe-opciones .campo { display: flex; align-items: center; gap: 10px; font-weight: 600; flex: 1 1 280px; }
+.informe-opciones .campo input { flex: 1; min-width: 0; font-weight: 500; }
+.informe-acciones { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.informe-paginas { color: var(--tinta-2); font-size: 13px; margin-left: auto; }
+
+.informe-zoom { display: flex; justify-content: center; }
+.papel.ampliado { overflow-x: auto; overflow-y: hidden; align-items: flex-start; -webkit-overflow-scrolling: touch; }
+.papel { --k: 1; display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; min-width: 0; overflow: hidden; padding-bottom: 6px; }
+.hoja-marco {
+  width: calc(210mm * var(--k)); height: calc(297mm * var(--k)); flex: none;
+  background: #fff; border-radius: 4px; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12), 0 12px 32px rgba(16, 24, 40, 0.12);
+}
+.hoja {
+  color-scheme: light;
+  --tinta: #1b2430; --tinta-2: #5b6776; --linea: #dfe4ea; --sup: #fff; --sup-2: #f3f5f8;
+  --s1: #257de0; --s2: #f47230; --s3: #00b894; --s4: #f2a600; --s5: #ee7fac; --s6: #008a17; --s7: #6a4ce2; --s8: #ec4647;
+  --bien: #0a8f2a; --bien-fondo: #e6f6ea; --aviso: #b97a00; --aviso-fondo: #fdf3d6; --mal: #c9302f; --mal-fondo: #fde8e8;
+  --m-neutro: #257de0; --m-neutro-pista: #d6e7fb; --m-aviso: #f2a600; --m-aviso-pista: #fbeac0; --m-mal: #dc3c3d; --m-mal-pista: #f8d5d5;
+  --azul: #17365d;
+  width: 210mm; height: 297mm; padding: 13mm 13mm 9mm; display: flex; flex-direction: column;
+  transform: scale(var(--k)); transform-origin: 0 0;
+  background: #fff; color: var(--tinta);
+  font: 9pt/1.38 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.hoja-cuerpo { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 5mm; }
+.hoja-cuerpo > * { flex: none; }
+.hoja-pie {
+  flex: none; display: flex; justify-content: space-between; gap: 10mm; margin-top: 4mm; padding-top: 2.5mm;
+  border-top: 0.3mm solid var(--linea); font-size: 7.5pt; color: var(--tinta-2);
+}
+
+.inf-cabecera { display: flex; justify-content: space-between; align-items: flex-end; gap: 10mm; padding-bottom: 4mm; border-bottom: 0.7mm solid var(--azul); }
+.inf-sobretitulo { font-size: 8pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tinta-2); }
+.inf-cabecera h1 { font-size: 19pt; line-height: 1.15; color: var(--azul); letter-spacing: -0.01em; }
+.inf-titular { font-size: 11.5pt; font-weight: 600; margin-top: 1mm; }
+.inf-fecha { text-align: right; font-size: 8pt; color: var(--tinta-2); white-space: nowrap; }
+.inf-fecha strong { display: block; font-size: 10pt; color: var(--tinta); }
+
+.inf-bloque h3 {
+  font-size: 10.5pt; color: var(--azul); padding-bottom: 1.2mm; margin-bottom: 1.6mm; border-bottom: 0.35mm solid var(--azul);
+  display: flex; justify-content: space-between; align-items: baseline; gap: 6mm;
+}
+.inf-bloque h3 small { font-size: 7.5pt; font-weight: 500; color: var(--tinta-2); }
+
+.inf-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; }
+.inf-kpis div { background: #e8eef6; border-radius: 1.6mm; padding: 2.6mm 3mm; display: grid; gap: 0.6mm; }
+.inf-kpis span { font-size: 7.6pt; color: var(--tinta-2); font-weight: 600; }
+.inf-kpis strong { font-size: 13pt; color: var(--azul); letter-spacing: -0.01em; white-space: nowrap; }
+
+.inf-columnas { display: grid; grid-template-columns: 1fr 1.18fr; gap: 8mm; align-items: start; }
+.inf-fichas > div { display: flex; justify-content: space-between; gap: 4mm; padding: 1.15mm 0; border-bottom: 0.2mm solid var(--linea); }
+.inf-fichas dt { color: var(--tinta-2); }
+.inf-fichas dd { font-weight: 600; text-align: right; white-space: nowrap; }
+.inf-columnas > div:first-child dd { white-space: normal; }
+.inf-fichas dd small { display: inline-block; min-width: 14mm; font-weight: 500; color: var(--tinta-2); font-size: 8pt; }
+
+.inf-solvencia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+.inf-indicador { display: grid; gap: 1.2mm; align-content: start; }
+.inf-indicador-cabecera { display: flex; align-items: center; gap: 2.5mm; }
+.inf-indicador-cabecera strong { font-size: 13pt; }
+.inf-indicador p { font-weight: 600; line-height: 1.25; }
+.inf-indicador p small { display: block; font-weight: 400; color: var(--tinta-2); font-size: 7.6pt; }
+.hoja .estado { font-size: 7.4pt; padding: 0.5mm 2mm; }
+.hoja .estado .icono { width: 9pt; height: 9pt; }
+.hoja .medidor-pista { height: 2.2mm; border-radius: 1.1mm; }
+.hoja .medidor-relleno { border-radius: 1.1mm; }
+.hoja .medidor-limite { top: -1mm; bottom: -1mm; width: 0.5mm; }
+.hoja .medidor-escala { font-size: 7pt; height: 3.4mm; }
+.inf-composicion { margin-top: 4mm; display: grid; gap: 1.4mm; }
+.inf-composicion p { font-weight: 600; }
+.hoja .segmentada.alta .segmento { height: 5.4mm; font-size: 7.6pt; border-radius: 1mm; padding: 0 2mm; }
+.inf-composicion ul { display: flex; flex-wrap: wrap; gap: 1mm 7mm; font-size: 8pt; }
+.inf-composicion li { display: flex; align-items: center; gap: 1.6mm; }
+.hoja .reparto-muestra { width: 2.4mm; height: 2.4mm; border-radius: 0.6mm; }
+
+.inf-tabla table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 8.3pt; font-variant-numeric: tabular-nums; }
+.inf-tabla th, .inf-tabla td { padding: 1.3mm 1.6mm; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+.inf-tabla thead th { background: var(--azul); color: #fff; font-weight: 600; font-size: 7.8pt; vertical-align: bottom; }
+.inf-tabla tbody td { border-bottom: 0.2mm solid var(--linea); }
+.inf-tabla .num { text-align: right; white-space: nowrap; overflow-wrap: normal; }
+.inf-tabla thead th.num { white-space: normal; }
+.inf-tabla td.fino { font-size: 7.4pt; white-space: nowrap; overflow-wrap: normal; padding-top: 1.55mm; }
+.inf-tabla tfoot td { font-weight: 700; background: var(--sup-2); border-top: 0.35mm solid var(--tinta-2); }
+
+.inf-enlaces li { display: grid; grid-template-columns: 52mm minmax(0, 1fr); gap: 4mm; padding: 1.1mm 0; border-bottom: 0.2mm solid var(--linea); }
+.inf-enlaces span { font-weight: 600; }
+.inf-enlaces a { color: #1b64be; overflow-wrap: anywhere; font-size: 8pt; }
+.inf-nota { font-size: 7.4pt; color: var(--tinta-2); font-style: italic; }
+
+/* ---------- Impresión / Guardar como PDF ---------- */
+
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: #fff !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .lateral, .barra, .pestanas, .barra-guardar, .banda-demo, .toasts, .tip, .informe-herramientas, .informe-zoom { display: none !important; }
+  .app { display: block; min-height: 0; }
+  .contenido { padding: 12mm; max-width: none; }
+  body[data-vista="informe"] .contenido { padding: 0; }
+  .vista-informe { display: block; }
+  .papel, .papel.ampliado { display: block; overflow: visible; padding: 0; }
+  .hoja-marco { width: 210mm; height: 296.6mm; border-radius: 0; box-shadow: none; break-after: page; break-inside: avoid; }
+  .hoja-marco:last-child { break-after: auto; }
+  .hoja { transform: none; }
+}

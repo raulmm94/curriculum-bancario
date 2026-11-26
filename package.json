@@ -1,0 +1,15 @@
+{
+  "name": "curriculum-bancario",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Visor y generador de currículum bancario conectado a Google Sheets (sin almacenar datos).",
+  "scripts": {
+    "dev": "node tools/servidor-dev.mjs",
+    "demo": "node tools/generar-demo.mjs",
+    "test": "node --test test/*.test.mjs",
+    "deploy": "wrangler deploy",
+    "deploy:preview": "wrangler versions upload --preview-alias dev",
+    "build": "node tools/construir-worker.mjs"
+  }
+}
