@@ -1,12 +1,15 @@
 {
-  // Un único Worker de Cloudflare que solo sirve archivos estáticos (no hay código de servidor,
-  // ni bases de datos, ni sesiones: la app habla directamente con tu Apps Script desde el navegador).
+  // Un único Worker de Cloudflare, sin bindings: ni base de datos, ni KV, ni sesiones.
+  // Solo sirve los archivos estáticos de ./public (empaquetados en dist/worker.js por el paso de
+  // build); la app habla directamente con tu Apps Script desde el navegador.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "curriculum-bancario",
+  "main": "dist/worker.js",
   "compatibility_date": "2026-11-01",
-  "assets": {
-    "directory": "./public",
-    "not_found_handling": "single-page-application"
+  "build": {
+    "command": "node tools/construir-worker.mjs"
   },
-  "preview_urls": true
+  "workers_dev": true,
+  "preview_urls": true,
+  "observability": { "enabled": false }
 }

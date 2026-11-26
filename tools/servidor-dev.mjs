@@ -3,11 +3,11 @@
 // Código de conexión de desarrollo: se imprime al arrancar.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { readFileSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { cargarConector } from '../test/mock-gas.mjs';
 import { crearLibroFicticio } from '../test/hoja-ficticia.mjs';
+import { cabecerasSeguridad as cabecerasProduccion } from './construir-worker.mjs';
 
 const RAIZ = fileURLToPath(new URL('../public/', import.meta.url));
 const PUERTO = Number(process.env.PORT || 8788);
@@ -17,19 +17,6 @@ const TIPOS = {
   '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json',
   '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.txt': 'text/plain; charset=utf-8',
 };
-
-function cabecerasProduccion() {
-  const out = {};
-  let activa = false;
-  for (const linea of readFileSync(join(RAIZ, '_headers'), 'utf8').split('\n')) {
-    if (!linea.trim() || linea.trim().startsWith('#')) continue;
-    if (!/^\s/.test(linea)) { activa = linea.trim() === '/*'; continue; }
-    if (!activa) continue;
-    const i = linea.indexOf(':');
-    out[linea.slice(0, i).trim()] = linea.slice(i + 1).trim();
-  }
-  return out;
-}
 
 const gas = cargarConector(crearLibroFicticio(), { CB_CLAVE: CLAVE });
 

@@ -97,7 +97,7 @@ No hay paso de compilación: `public/` se sirve tal cual.
 npm run dev
 ```
 
-Arranca un servidor local con las mismas cabeceras que producción y un **conector simulado** sobre un
+Arranca un servidor local con las mismas cabeceras que producción (`public/_headers`) y un **conector simulado** sobre un
 libro ficticio. Imprime en consola el código de conexión de desarrollo.
 
 ```bash
@@ -118,6 +118,7 @@ Regenera los datos del modo demo (`public/js/demo-datos.js`) a partir del libro 
 |---|---|
 | `apps-script/Code.gs` | Conector que se pega en el Google Sheet |
 | `public/` | La app estática (lo único que se despliega) |
+| `tools/construir-worker.mjs` | Empaqueta `public/` en el Worker (`dist/worker.js`) |
 | `public/js/modelo.js` | Reconoce columnas por cabecera y calcula derivados |
 | `public/js/vistas/` | Resumen, Patrimonio, Mes a mes, Informe y Conexión |
 | `public/js/graficos.js` | Gráficos SVG propios, sin librerías |
@@ -130,32 +131,28 @@ Regenera los datos del modo demo (`public/js/demo-datos.js`) a partir del libro 
 - `dev`: desarrollo. Los cambios se prueban aquí y se pasan a `main` con un pull request.
 
 La app es **un único Worker de Cloudflare** (`curriculum-bancario`, definido en `wrangler.jsonc`)
-que solo sirve los archivos estáticos de `public/`: sin base de datos, sin almacenamiento y sin
-código de servidor.
+sin bindings: ni base de datos, ni KV, ni sesiones, ni registros. Lo único que hace es servir los
+archivos de `public/` con las cabeceras de seguridad de `public/_headers`.
 
-### Despliegue automático (recomendado): Workers Builds
-
-En el panel de Cloudflare → *Workers & Pages* → *Create* → *Import a repository*, elige este
-repositorio. Cloudflare lee `wrangler.jsonc` y a partir de ahí:
-
-- cada push a la rama de producción publica la app (`npx wrangler deploy`);
-- con *non-production branch builds* activado, cada push a otra rama (p. ej. `dev`) genera una
-  versión de prueba con su propia URL, sin tocar producción (`npx wrangler versions upload`).
-
-Así hay rama de desarrollo y de producción con una sola aplicación.
-
-### Despliegue manual con Wrangler
+El paso de build (`npm run build`, que wrangler ejecuta solo) empaqueta esos archivos dentro de
+`dist/worker.js`. Se hace así, en vez de usar los *static assets* de Workers, para que desplegar sea
+una única subida autenticada con un token de API normal: funciona igual desde un ordenador, desde
+Workers Builds y desde una sesión en la nube.
 
 ```bash
 npm run deploy
 ```
 
-Publica en producción (`wrangler deploy`; necesita `wrangler login` o un token de API con permiso
-*Workers Scripts: Edit*).
+Publica en producción (`wrangler deploy`). Necesita `wrangler login` o la variable
+`CLOUDFLARE_API_TOKEN` con un token con permiso *Workers Scripts: Edit*.
 
 ```bash
 npm run deploy:preview
 ```
 
-Sube una versión de prueba con su propia URL (`dev-curriculum-bancario.<subdominio>.workers.dev`)
-sin tocar producción.
+Sube una **versión de prueba** con su propia URL (`dev-curriculum-bancario.<subdominio>.workers.dev`)
+sin tocar producción. Es la forma de tener desarrollo y producción con una sola aplicación.
+
+Para automatizarlo, en el panel de Cloudflare → Worker `curriculum-bancario` → *Settings* → *Builds*
+se puede conectar este repositorio: cada push a la rama de producción publica y, con
+*non-production branch builds*, cada push a `dev` genera su versión de prueba.

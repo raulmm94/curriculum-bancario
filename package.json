@@ -9,6 +9,7 @@
     "demo": "node tools/generar-demo.mjs",
     "test": "node --test test/*.test.mjs",
     "deploy": "wrangler deploy",
-    "deploy:preview": "wrangler versions upload --preview-alias dev"
+    "deploy:preview": "wrangler versions upload --preview-alias dev",
+    "build": "node tools/construir-worker.mjs"
   }
 }
