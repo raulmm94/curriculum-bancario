@@ -129,13 +129,34 @@ Regenera los datos del modo demo (`public/js/demo-datos.js`) a partir del libro 
 - `main`: producción.
 - `dev`: desarrollo. Los cambios se prueban aquí y se pasan a `main` con un pull request.
 
-Hay **un único Worker de Cloudflare** (`curriculum-bancario`) que solo sirve archivos estáticos.
+Hay **un único Worker de Cloudflare** (`curriculum-bancario`), sin base de datos ni almacenamiento.
+
+### Estado actual: Worker provisional
+
+Mientras no haya un despliegue automático configurado, el Worker publicado es
+[`cloudflare/worker-provisional.js`](cloudflare/worker-provisional.js): sirve los archivos de
+`public/` de un commit concreto de este repositorio (necesita que el repo sea público) con las mismas
+cabeceras de seguridad. Para publicar otra versión hay que cambiar el commit fijado en el Worker.
+
+### Despliegue definitivo (recomendado): Workers Builds
+
+En el panel de Cloudflare → *Workers & Pages* → `curriculum-bancario` → *Settings* → *Builds* →
+**Connect** y elige este repositorio. Cloudflare lee `wrangler.jsonc` y a partir de ahí:
+
+- cada push a `main` publica en producción (`npx wrangler deploy`);
+- con *non-production branch builds* activado, cada push a `dev` genera una versión de prueba con
+  su propia URL, sin tocar producción (`npx wrangler versions upload`).
+
+Así hay rama de desarrollo y de producción con una sola aplicación, y el repositorio puede pasar a
+ser privado.
+
+### Despliegue manual con Wrangler
 
 ```bash
 npm run deploy
 ```
 
-Publica en producción (`wrangler deploy`).
+Publica en producción (`wrangler deploy`, necesita `wrangler login` o un token de API).
 
 ```bash
 npm run deploy:preview
