@@ -7,6 +7,8 @@
 .informe-acciones { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .informe-paginas { color: var(--tinta-2); font-size: 13px; margin-left: auto; }
 
+.informe-zoom { display: flex; justify-content: center; }
+.papel.ampliado { overflow-x: auto; overflow-y: hidden; align-items: flex-start; -webkit-overflow-scrolling: touch; }
 .papel { --k: 1; display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; min-width: 0; overflow: hidden; padding-bottom: 6px; }
 .hoja-marco {
   width: calc(210mm * var(--k)); height: calc(297mm * var(--k)); flex: none;
@@ -96,12 +98,12 @@
 @media print {
   html, body { background: #fff !important; }
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  .lateral, .barra, .pestanas, .barra-guardar, .banda-demo, .toasts, .tip, .informe-herramientas { display: none !important; }
+  .lateral, .barra, .pestanas, .barra-guardar, .banda-demo, .toasts, .tip, .informe-herramientas, .informe-zoom { display: none !important; }
   .app { display: block; min-height: 0; }
   .contenido { padding: 12mm; max-width: none; }
   body[data-vista="informe"] .contenido { padding: 0; }
   .vista-informe { display: block; }
-  .papel { display: block; overflow: visible; padding: 0; }
+  .papel, .papel.ampliado { display: block; overflow: visible; padding: 0; }
   .hoja-marco { width: 210mm; height: 296.6mm; border-radius: 0; box-shadow: none; break-after: page; break-inside: avoid; }
   .hoja-marco:last-child { break-after: auto; }
   .hoja { transform: none; }

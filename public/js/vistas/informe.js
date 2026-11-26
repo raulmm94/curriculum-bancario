@@ -154,11 +154,20 @@ export function vistaInforme(app) {
   const paginas = h('span.informe-paginas');
   let info = datosInforme(m, op);
 
+  // Sin zoom táctil en la app, la hoja se puede ampliar a tamaño real y desplazarse dentro de su marco.
+  const botonZoom = h('button.boton.mini', { type: 'button' });
+  const barraZoom = h('div.informe-zoom', botonZoom);
+  botonZoom.addEventListener('click', () => { op.ampliado = !op.ampliado; ajustarEscala(); });
   const ajustarEscala = () => {
     const hoja = papel.querySelector('.hoja');
     if (!hoja) return;
-    const disponible = papel.clientWidth;
-    papel.style.setProperty('--k', String(Math.min(1, disponible / hoja.offsetWidth)));
+    const ajuste = Math.min(1, papel.clientWidth / hoja.offsetWidth);
+    const ampliar = Boolean(op.ampliado) && ajuste < 0.9;
+    barraZoom.hidden = ajuste >= 0.9;
+    botonZoom.textContent = ampliar ? 'Ajustar a la pantalla' : 'Ampliar la hoja';
+    papel.classList.toggle('ampliado', ampliar);
+    papel.style.setProperty('--k', String(ampliar ? 1 : ajuste));
+    if (!ampliar) papel.scrollLeft = 0;
   };
   const componer = () => {
     info = datosInforme(m, op);
@@ -208,7 +217,7 @@ export function vistaInforme(app) {
       paginas),
     h('p.tarjeta-nota', 'En el diálogo de impresión elige «Guardar como PDF». El informe ya está ajustado a tamaño folio (A4) y no se envía a ningún servidor.'));
 
-  const raiz = h('div.vista.vista-informe', herramientas, papel);
+  const raiz = h('div.vista.vista-informe', herramientas, barraZoom, papel);
   const ro = new ResizeObserver(ajustarEscala);
   ro.observe(papel);
   raiz._montado = componer;

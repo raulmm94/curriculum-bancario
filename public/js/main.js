@@ -293,6 +293,10 @@ function render() {
 
 /* ---------- Inicio ---------- */
 
+// Refuerzo para iOS: anula el gesto de pellizco aunque el navegador ignore «user-scalable=no».
+for (const gesto of ['gesturestart', 'gesturechange', 'gestureend']) {
+  document.addEventListener(gesto, (e) => e.preventDefault(), { passive: false });
+}
 window.addEventListener('hashchange', () => { leerRuta(); render(); });
 window.addEventListener('beforeunload', (e) => {
   if (estado.pendientes.size) { e.preventDefault(); e.returnValue = ''; }
